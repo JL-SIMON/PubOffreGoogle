@@ -28,9 +28,7 @@
 </head>
 <body class="gradient-bg">
 
-    <!-- Le contenu de votre page reste identique -->
     <div class="container mx-auto p-4 md:p-8 max-w-5xl">
-        <!-- ... tout votre contenu HTML (header, sections, footer) va ici ... -->
         <!-- En-tête -->
         <header class="text-center py-8">
              <div class="flex justify-center items-center space-x-4 md:space-x-8 mb-8">
@@ -98,7 +96,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     Attention : Offre de Lancement !
                 </h3>
-                <p class="mt-2">Ces tarifs promotionnels sont valables uniquement jusqu'à fin **juillet 2025**. Après cette date, les prix augmenteront comme en magasin :</p>
+                <p class="mt-2">Ces tarifs promotionnels sont valables uniquement jusqu'à fin juillet 2025. Après cette date, les prix augmenteront comme en magasin :</p>
                 <ul class="list-disc list-inside mt-2 space-y-1">
                     <li>L'offre à 30.000 Ar passera à <strong>50.000 Ar</strong>.</li>
                     <li>Le pack complet à 70.000 Ar passera à <strong>100.000 Ar</strong>.</li>
@@ -139,8 +137,8 @@
         <!-- En-tête du chat -->
         <div class="p-4 bg-gray-50 border-b flex items-center justify-between">
             <div class="flex items-center">
-                <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                <h3 class="font-bold text-gray-800">Assistant IA ✨</h3>
+                <img src="/photo/profilIA.png" alt="Simon AI" class="w-8 h-8 rounded-full mr-3 object-cover" onerror="this.src='https://placehold.co/40x40/7B61FF/FFFFFF?text=SAI'">
+                <h3 class="font-bold text-gray-800">Simon AI</h3>
             </div>
             <button id="close-chat" class="text-gray-500 hover:text-gray-800">&times;</button>
         </div>
@@ -169,12 +167,11 @@
         const closeChatButton = document.getElementById('close-chat');
 
         const initialQuestions = {
-            'offre_30k': "Expliquez-moi l'offre à 30.000 Ar.",
+            'offre_30k': "Explique-moi l'offre à 30.000 Ar.",
             'offre_70k': "Détails sur l'offre à 70.000 Ar ?",
             'difference': "Quelle est la différence principale ?"
         };
 
-        // ... le reste du code JavaScript reste identique ...
         chatBubble.addEventListener('click', () => {
             chatWindow.classList.toggle('open');
             if(chatWindow.classList.contains('open') && chatBody.children.length === 0) {
@@ -188,7 +185,7 @@
         });
         
         function startChat() {
-            addAgentMessage("Bonjour ! Je suis l'assistant IA de JL Simon. Posez-moi une question sur l'offre Gemini ou cliquez sur une suggestion.", true);
+            addAgentMessage("Salut ! Je suis Simon AI. 😊 En quoi puis-je t'aider concernant nos super offres Gemini ? N'hésite pas à me poser une question ou à choisir une option !", true);
         }
 
         async function handleSendMessage() {
@@ -206,7 +203,7 @@
             } catch (error) {
                 console.error("Error calling secure agent:", error);
                 chatBody.removeChild(typing);
-                addAgentMessage("Désolé, une erreur est survenue avec notre assistant. Veuillez réessayer ou contacter directement JL Simon.", true);
+                addAgentMessage("Oups, j'ai un petit souci technique. 😅 Pourrais-tu réessayer ou contacter directement JL Simon via les liens sur la page ?", true);
             } finally {
                 setChatInputDisabled(false);
             }
@@ -225,7 +222,7 @@
             } catch (error) {
                 console.error("Error calling secure agent:", error);
                 chatBody.removeChild(typing);
-                addAgentMessage("Désolé, une erreur est survenue avec notre assistant. Veuillez réessayer ou contacter directement JL Simon.", true);
+                addAgentMessage("Oups, j'ai un petit souci technique. 😅 Pourrais-tu réessayer ou contacter directement JL Simon via les liens sur la page ?", true);
             } finally {
                 setChatInputDisabled(false);
             }
@@ -264,7 +261,7 @@
             messageWrapper.className = 'w-full flex justify-end';
             messageWrapper.innerHTML = `<div class="chat-message user-message">${message}</div>`;
             chatBody.appendChild(messageWrapper);
-scrollToBottom();
+            scrollToBottom();
         }
 
         function showTypingIndicator() {
@@ -292,7 +289,7 @@ scrollToBottom();
         function setChatInputDisabled(disabled) {
             chatInput.disabled = disabled;
             sendButton.disabled = disabled;
-            chatInput.placeholder = disabled ? "L'assistant écrit..." : "Posez votre question...";
+            chatInput.placeholder = disabled ? "J'écris..." : "Posez votre question...";
         }
 
         function scrollToBottom() {
@@ -302,4 +299,3 @@ scrollToBottom();
     </script>
 </body>
 </html>
-
