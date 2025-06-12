@@ -9,17 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Utilisation de la police Inter pour un look moderne */
+        /* Styles généraux */
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Dégradé subtil pour l'arrière-plan */
         .gradient-bg {
             background-color: #f7f8fc;
             background-image: radial-gradient(circle at 1% 1%, #e2e8f0 0%, transparent 50%),
                               radial-gradient(circle at 99% 99%, #dde6f9 0%, transparent 40%);
         }
-        /* Effet d'ombre et de survol pour les cartes */
         .promo-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -27,16 +25,98 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
+
+        /* Styles pour l'agent IA */
+        #chat-bubble {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #1a73e8;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.2s ease-in-out;
+        }
+        #chat-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        #chat-window {
+            position: fixed;
+            bottom: 6.5rem;
+            right: 2rem;
+            width: 350px;
+            max-width: 90vw;
+            height: 500px;
+            max-height: 70vh;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transform: scale(0.95) translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #chat-window.open {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-message {
+            padding: 8px 12px;
+            border-radius: 18px;
+            margin-bottom: 8px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .agent-message {
+            background-color: #f1f3f4;
+            color: #202124;
+            align-self: flex-start;
+        }
+        .user-message {
+            background-color: #d2e3fc;
+            color: #0d47a1;
+            align-self: flex-end;
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #909090;
+            animation: typing 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
     </style>
 </head>
 <body class="gradient-bg">
 
-    <!-- Conteneur Principal -->
+    <!-- Conteneur Principal de la page -->
     <div class="container mx-auto p-4 md:p-8 max-w-5xl">
-
-        <!-- En-tête avec les logos -->
+        <!-- Contenu existant de la page... -->
+        <!-- En-tête -->
         <header class="text-center py-8">
-            <div class="flex justify-center items-center space-x-4 md:space-x-8 mb-8">
+             <div class="flex justify-center items-center space-x-4 md:space-x-8 mb-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Google_Gemini_logo.svg/1024px-Google_Gemini_logo.svg.png" alt="Logo Gemini" class="h-10 md:h-12" onerror="this.style.display='none'">
                 <span class="text-gray-300 text-2xl">+</span>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Google_Cloud_logo.svg/1280px-Google_Cloud_logo.svg.png" alt="Logo Google Cloud" class="h-8 md:h-10" onerror="this.style.display='none'">
@@ -51,21 +131,18 @@
             </h2>
         </header>
 
-        <!-- Section des bénéfices -->
-        <section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <!-- Bénéfice 1: Gemini Pro -->
+        <!-- Bénéfices -->
+         <section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl">
                 <div class="text-4xl mb-4">🧠</div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">IA de Pointe</h3>
                 <p class="text-gray-600">Utilisez Gemini Pro dans NotebookLM pour analyser, rédiger et créer sans limites.</p>
             </div>
-            <!-- Bénéfice 2: Stockage Cloud -->
             <div class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl">
                 <div class="text-4xl mb-4">☁️</div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">2 To de Stockage</h3>
                 <p class="text-gray-600">Archivez tous vos fichiers, photos et projets en toute sécurité. Ne manquez plus jamais d'espace.</p>
             </div>
-            <!-- Bénéfice 3: Intégration -->
             <div class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl">
                 <div class="text-4xl mb-4">🔄</div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Intégration Parfaite</h3>
@@ -73,11 +150,10 @@
             </div>
         </section>
 
-        <!-- Section des Prix -->
+        <!-- Prix -->
         <section class="mt-16">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Offre 1: Avec Carte Visa -->
-                <div class="promo-card bg-white border-2 border-green-500 rounded-2xl p-8 flex flex-col shadow-lg">
+                 <div class="promo-card bg-white border-2 border-green-500 rounded-2xl p-8 flex flex-col shadow-lg">
                     <h3 class="text-lg font-bold text-green-600">POUR LES DÉTENTEURS DE CARTE VISA</h3>
                     <p class="text-5xl md:text-6xl font-black text-gray-800 my-4">30.000 Ar</p>
                     <p class="text-gray-600 mb-2">Activation instantanée sur votre compte Google.</p>
@@ -86,9 +162,7 @@
                         Choisir cette offre
                     </a>
                 </div>
-
-                <!-- Offre 2: Sans Carte Visa -->
-                <div class="promo-card bg-white border-2 border-blue-500 rounded-2xl p-8 flex flex-col shadow-lg">
+                 <div class="promo-card bg-white border-2 border-blue-500 rounded-2xl p-8 flex flex-col shadow-lg">
                     <h3 class="text-lg font-bold text-blue-600">SANS CARTE VISA ? PAS DE PROBLÈME.</h3>
                     <p class="text-5xl md:text-6xl font-black text-gray-800 my-4">70.000 Ar</p>
                     <p class="text-gray-600 mb-2">Nous incluons la création d'une carte de paiement et l'activation du service.</p>
@@ -100,9 +174,9 @@
             </div>
         </section>
 
-        <!-- NOUVELLE SECTION : Avertissement sur la durée de l'offre -->
+        <!-- Avertissement -->
         <section class="mt-10 max-w-4xl mx-auto">
-            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-r-lg">
+             <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-r-lg">
                 <h3 class="text-xl font-bold flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     Attention : Offre de Lancement !
@@ -116,17 +190,15 @@
             </div>
         </section>
 
-        <!-- Section Contact (Appel à l'action) -->
+        <!-- Contact -->
         <section id="contact" class="mt-16 text-center bg-gray-800 text-white p-8 md:p-12 rounded-2xl">
             <h3 class="text-3xl font-bold">Prêt à transformer votre productivité ?</h3>
             <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">Contactez JL Simon dès maintenant pour activer votre offre. Votre compte Google est la seule clé dont vous avez besoin.</p>
             <div class="mt-8 flex flex-col md:flex-row justify-center items-center gap-4">
-                <!-- NOTE: Lien WhatsApp mis à jour -->
-                <a href="https://wa.me/261326439245" target="_blank" class="bg-green-500 font-bold py-3 px-8 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2">
+                 <a href="https://wa.me/261326439245" target="_blank" class="bg-green-500 font-bold py-3 px-8 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.001.004 1.516 2.443-1.256 4.563 4.659-1.222z"/></svg>
                     Contacter sur WhatsApp
                 </a>
-                <!-- NOTE: Lien Facebook mis à jour -->
                 <a href="https://www.facebook.com/jl.simon.2025" target="_blank" class="bg-gray-700 font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition-colors">
                     Message sur Facebook
                 </a>
@@ -139,9 +211,222 @@
             Google, Gemini, Google Cloud, et Gmail sont des marques déposées de Google LLC.
             </p>
         </footer>
-<script data-goatcounter="https://jl-simon.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
     </div>
 
+
+    <!-- ÉLÉMENTS DE L'AGENT IA -->
+    <div id="chat-bubble">
+        <svg id="chat-bubble-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.839 8.839 0 01-4.083-.982L2 18l1.982-3.917A8.949 8.949 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.415 14.183A6.975 6.975 0 0010 15a7 7 0 100-14 6.974 6.974 0 00-5.585 2.817L3.18 5.414 2.82 11.2l1.595 3.017z" clip-rule="evenodd" />
+        </svg>
+    </div>
+
+    <div id="chat-window">
+        <!-- En-tête du chat -->
+        <div class="p-4 bg-gray-50 border-b flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                <h3 class="font-bold text-gray-800">Assistant IA ✨</h3>
+            </div>
+            <button id="close-chat" class="text-gray-500 hover:text-gray-800">&times;</button>
+        </div>
+
+        <!-- Corps du chat -->
+        <div id="chat-body" class="flex-1 p-4 overflow-y-auto flex flex-col space-y-2">
+            <!-- Les messages apparaîtront ici -->
+        </div>
+
+        <!-- Zone de saisie du chat -->
+        <div id="chat-input-area" class="p-2 border-t bg-gray-50">
+             <div id="chat-options" class="p-2 grid grid-cols-1 gap-2">
+                <!-- Les boutons de question apparaîtront ici -->
+            </div>
+            <div class="flex items-center p-2">
+                <input type="text" id="chat-input" placeholder="Posez votre question..." class="w-full px-3 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" disabled>
+                <button id="send-button" class="ml-2 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-gray-300" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chat elements
+        const chatBubble = document.getElementById('chat-bubble');
+        const chatWindow = document.getElementById('chat-window');
+        const chatBody = document.getElementById('chat-body');
+        const chatOptions = document.getElementById('chat-options');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+        const closeChatButton = document.getElementById('close-chat');
+
+        // Context for the AI
+        const systemPrompt = `Tu es un assistant commercial amical et serviable pour JL Simon. Ton objectif est d'expliquer l'offre Gemini Pro + 2 To de stockage et de convaincre l'utilisateur de contacter JL Simon. Réponds uniquement aux questions concernant cette offre spécifique. Sois concis et clair. Voici les informations sur l'offre :
+- Il y a deux prix pour un abonnement de 15 mois au service Gemini Pro avec 2 To de stockage Google.
+- Offre 1 (pour ceux qui ont déjà une carte VISA) : 30.000 Ar. L'activation est immédiate.
+- Offre 2 (pour ceux sans carte VISA) : 70.000 Ar. Ce prix inclut la création d'une carte VISA en plus du service. C'est un pack complet.
+- Ces prix promotionnels sont valables jusqu'à fin juillet 2025. Après cette date, le prix de l'offre 1 passe à 50.000 Ar et celui de l'offre 2 à 100.000 Ar.
+- Pour souscrire, l'utilisateur doit contacter JL Simon via WhatsApp au +261 32 64 39 245 ou sur sa page Facebook.
+- Reste toujours concentré sur la vente et l'explication de l'offre. Ne dévie pas du sujet.`;
+
+        const initialQuestions = {
+            'offre_30k': "Expliquez-moi l'offre à 30.000 Ar.",
+            'offre_70k': "Détails sur l'offre à 70.000 Ar ?",
+            'difference': "Quelle est la différence principale ?"
+        };
+        
+        // Open/Close chat window
+        chatBubble.addEventListener('click', () => {
+            chatWindow.classList.toggle('open');
+            if(chatWindow.classList.contains('open') && chatBody.children.length === 0) {
+                startChat();
+            }
+        });
+        closeChatButton.addEventListener('click', () => chatWindow.classList.remove('open'));
+
+        // Send message event listeners
+        sendButton.addEventListener('click', handleSendMessage);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleSendMessage();
+        });
+        
+        // --- Core Chat Functions ---
+
+        function startChat() {
+            addAgentMessage("Bonjour ! Je suis l'assistant IA de JL Simon. Posez-moi une question sur l'offre Gemini ou cliquez sur une suggestion.", true);
+        }
+        
+        async function handleSendMessage() {
+            const userInput = chatInput.value.trim();
+            if (userInput === '') return;
+
+            addUserMessage(userInput);
+            chatInput.value = '';
+            setChatInputDisabled(true);
+            chatOptions.innerHTML = ''; // Hide options on user input
+
+            const typing = showTypingIndicator();
+            try {
+                const aiResponse = await askGemini(userInput);
+                chatBody.removeChild(typing);
+                addAgentMessage(aiResponse, true); // Show new options after response
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                chatBody.removeChild(typing);
+                addAgentMessage("Désolé, une erreur est survenue. Veuillez réessayer ou contacter directement JL Simon via les boutons sur la page.", true);
+            } finally {
+                setChatInputDisabled(false);
+            }
+        }
+
+        async function handleOptionClick(key) {
+            const userQuestion = initialQuestions[key];
+            addUserMessage(userQuestion);
+            setChatInputDisabled(true);
+            chatOptions.innerHTML = ''; // Hide options on click
+
+            const typing = showTypingIndicator();
+            try {
+                const aiResponse = await askGemini(userQuestion);
+                chatBody.removeChild(typing);
+                addAgentMessage(aiResponse, true);
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                chatBody.removeChild(typing);
+                addAgentMessage("Désolé, une erreur est survenue. Veuillez réessayer ou contacter directement JL Simon via les boutons sur la page.", true);
+            } finally {
+                setChatInputDisabled(false);
+            }
+        }
+
+        async function askGemini(prompt) {
+            const apiKey = ""; // API key is handled by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            // We construct a simple history. The system prompt is prepended to the user query.
+            const chatHistory = [{
+                role: "user",
+                parts: [{ text: `${systemPrompt}\n\nQuestion de l'utilisateur : "${prompt}"` }]
+            }];
+
+            const payload = { contents: chatHistory };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    return "Je n'ai pas pu générer de réponse. Pouvez-vous reformuler ?";
+                }
+            } catch (error) {
+                 console.error("Fetch error:", error);
+                 return "Je rencontre des difficultés à me connecter. Veuillez vérifier votre connexion ou réessayer plus tard.";
+            }
+        }
+        
+        // --- UI Helper Functions ---
+
+        function addAgentMessage(message, showOptions = false) {
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = 'w-full flex justify-start';
+            messageWrapper.innerHTML = `<div class="chat-message agent-message">${message}</div>`;
+            chatBody.appendChild(messageWrapper);
+            if (showOptions) {
+                setTimeout(displayInitialOptions, 300);
+            }
+            scrollToBottom();
+        }
+
+        function addUserMessage(message) {
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = 'w-full flex justify-end';
+            messageWrapper.innerHTML = `<div class="chat-message user-message">${message}</div>`;
+            chatBody.appendChild(messageWrapper);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'chat-message agent-message typing-indicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            chatBody.appendChild(typingDiv);
+            scrollToBottom();
+            return typingDiv;
+        }
+
+        function displayInitialOptions() {
+            chatOptions.innerHTML = '';
+            Object.keys(initialQuestions).forEach(key => {
+                const button = document.createElement('button');
+                button.className = 'w-full text-left p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-sm';
+                button.textContent = initialQuestions[key];
+                button.onclick = () => handleOptionClick(key);
+                chatOptions.appendChild(button);
+            });
+            setChatInputDisabled(false);
+        }
+
+        function setChatInputDisabled(disabled) {
+            chatInput.disabled = disabled;
+            sendButton.disabled = disabled;
+            chatInput.placeholder = disabled ? "L'assistant écrit..." : "Posez votre question...";
+        }
+
+        function scrollToBottom() {
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    });
+    </script>
 </body>
 </html>
